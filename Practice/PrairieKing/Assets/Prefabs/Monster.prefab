@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 8877537235633494515}
   - component: {fileID: 8877537235633494519}
   - component: {fileID: 8877537235633494472}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Monster
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -129,6 +129,7 @@ MonoBehaviour:
   chaseTriggerDistance: 10
   damage: 1
   health: 10
+  explosionEffect: {fileID: 3813771216764741781, guid: 778946932b23c4245aa5ce1e7dfaf849, type: 3}
   flashDurationOnHit: 0.2
   flashInterval: 0.1
   flashColor: {r: 1, g: 1, b: 1, a: 1}

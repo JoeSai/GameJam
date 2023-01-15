@@ -6,9 +6,9 @@ public class MonsterSpawner : MonoBehaviour
     private static MonsterSpawner _instance;
     public static MonsterSpawner Instance { get { return _instance; } }
 
-    [SerializeField] private GameObject monsterPrefab;
+    [SerializeField] private List<GameObject> monsterPrefabs;
     [SerializeField] private List<Transform> spawnPoints;
-    [SerializeField] private float spawnInterval = 2f;
+    [SerializeField] private float spawnInterval = 5f;
     private float spawnTimer = 0f;
 
     private int currentWave = 0;
@@ -18,7 +18,9 @@ public class MonsterSpawner : MonoBehaviour
     private int killedMonsterCount;
 
     private bool isCanSpawn = true;
-
+    private bool isInfiniteMode = false;
+    private float spawnIntervalDecrement = 0.1f;  // 每一波生成间隔减少的时间
+    [SerializeField] private float spawnIntervalLimit = 1.5f;
     private void Awake()
     {
         if (_instance != null && _instance != this)
@@ -41,6 +43,10 @@ public class MonsterSpawner : MonoBehaviour
 
     void Update()
     {
+        if (!GameManager.Instance.IsGamePlaying())
+        {
+            return;
+        }
         if (isCanSpawn)
         {
             spawnTimer += Time.deltaTime;
@@ -53,10 +59,44 @@ public class MonsterSpawner : MonoBehaviour
             SpawnMonster();
             isCanSpawn = false;
         }
+
+        if (isInfiniteMode)
+        {
+            spawnTimer += Time.deltaTime;
+            if(spawnTimer >= spawnInterval)
+            {
+                spawnTimer = 0;
+                SpawnOneMonster();
+                if(spawnInterval < 4f)
+                {
+                    SpawnOneMonster();
+                }
+                if (spawnInterval < 3f)
+                {
+                    SpawnOneMonster();
+                }
+                if (spawnInterval < 2f)
+                {
+                    SpawnOneMonster();
+                }
+
+                spawnInterval -= spawnIntervalDecrement;
+                if(spawnInterval < spawnIntervalLimit)
+                {
+                    GameManager.Instance.GameComplete();
+                    //spawnInterval = spawnIntervalLimit;
+                }
+            }
+        }
     }
 
     public void AddKilledMonsterCount()
     {
+        GUIManager.Instance.UpdateScoreUI();
+        if (isInfiniteMode)
+        {
+            return;
+        }
         killedMonsterCount++;
         if(killedMonsterCount == waveSpawnCount[currentWave])
         {
@@ -68,7 +108,8 @@ public class MonsterSpawner : MonoBehaviour
             }
             else
             {
-                Debug.Log("game over");
+                isInfiniteMode = true;
+                //GameManager.Instance.GameOver();
             }
         }
     }
@@ -82,7 +123,7 @@ public class MonsterSpawner : MonoBehaviour
             {
                 spawnIndex = Random.Range(0, spawnPoints.Count);
             }
-            GameObject monster = Instantiate(monsterPrefab, spawnPoints[spawnIndex].position, Quaternion.identity);
+            GameObject monster = Instantiate(monsterPrefabs[0], spawnPoints[spawnIndex].position, Quaternion.identity);
             spawnPointUsed[spawnIndex] = true;
         }
 
@@ -90,5 +131,12 @@ public class MonsterSpawner : MonoBehaviour
         {
             spawnPointUsed[i] = false;
         }
+    }
+
+    public void SpawnOneMonster()
+    {
+        int spawnIndex = Random.Range(0, spawnPoints.Count);
+        int prefabIndex = Random.Range(0, monsterPrefabs.Count);
+        GameObject monster = Instantiate(monsterPrefabs[prefabIndex], spawnPoints[spawnIndex].position, Quaternion.identity);
     }
 }
