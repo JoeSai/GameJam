@@ -6,16 +6,16 @@ using UnityEngine;
 public class MonsterScript : MonoBehaviour
 {
     [SerializeField] protected float chaseSpeed = 1f;
-    [SerializeField] private float chaseTriggerDistance = 10f;
+    [SerializeField] protected float chaseTriggerDistance = 10f;
     [SerializeField] private int damage = 1;
     [SerializeField] protected int health = 10;
 
     [SerializeField] private GameObject explosionEffect;
 
 
-    private Transform target;
-    private Rigidbody2D rb;
-    private Vector2 moveVelocity;
+    protected Transform target;
+    protected Rigidbody2D rb;
+    protected Vector2 moveVelocity;
 
     protected SpriteRenderer spriteRenderer;
     [SerializeField] private float flashDurationOnHit = 0.2f;
@@ -25,7 +25,7 @@ public class MonsterScript : MonoBehaviour
     private float flashDuration;
 
     private bool isKnockback = false;
-    private Vector3 knockbackDirection;
+    private Vector2 knockbackDirection;
     private float knockbackForce;
 
     float lastAttackTime = 0f;
@@ -37,11 +37,11 @@ public class MonsterScript : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         originalColor = spriteRenderer.color;
+        InitParam();
     }
     void Start()
     {
         target = GameObject.FindWithTag("Player").transform;
-        InitParam();
     }
 
     protected virtual void InitParam()
@@ -55,6 +55,11 @@ public class MonsterScript : MonoBehaviour
     {
         this.health = health;
         PerformHealthChangerEffect();
+    }
+
+    public int GetHealth()
+    {
+        return health;
     }
 
     protected virtual void PerformHealthChangerEffect()
@@ -80,15 +85,26 @@ public class MonsterScript : MonoBehaviour
         {
             return;
         }
+
+        KnockBackUpdate();
+        MonsterUpdate();
+    }
+
+    protected virtual void KnockBackUpdate()
+    {
         if (isKnockback)
         {
-            rb.velocity = knockbackDirection * knockbackForce;
+            rb.velocity = knockbackDirection.normalized * knockbackForce;
             //rb.AddForce(knockbackDirection * knockbackForce, ForceMode2D.Impulse);
-            knockbackDirection = Vector3.zero;
+            knockbackDirection = Vector2.zero;
             knockbackForce = 0;
             isKnockback = false;
             return;
         }
+    }
+
+    protected virtual void MonsterUpdate()
+    {
         Vector2 chaseDirection = (target.position - transform.position).normalized;
         if (Vector2.Distance(transform.position, target.position) < chaseTriggerDistance)
         {
@@ -120,6 +136,12 @@ public class MonsterScript : MonoBehaviour
     {
 
         SetHealth(health - damage);
+
+        if(GameManager.isTEST)
+        {
+            MonsterSpawner.Instance.AddKilledMonsterCount();
+        }
+
         if (health < 0)
         {
             MonsterSpawner.Instance.AddKilledMonsterCount();
@@ -131,8 +153,8 @@ public class MonsterScript : MonoBehaviour
         StartCoroutine(Flash());
         SoundManager.Instance.PlayMonsterHurtSound();
 
-        this.knockbackDirection = knockbackDirection;
-        this.knockbackForce = knockbackForce;
+        this.knockbackDirection += knockbackDirection;
+        this.knockbackForce += knockbackForce;
         isKnockback = true;
 
         

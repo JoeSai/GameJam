@@ -20,8 +20,6 @@ public class GUIManager : MonoBehaviour
 
     private bool isClicked = false;
 
-    private int score = 0;
-    private int highScore = 0;
     
     private static GUIManager _instance;
     public static GUIManager Instance { get { return _instance; } }
@@ -37,8 +35,7 @@ public class GUIManager : MonoBehaviour
             _instance = this;
         }
 
-        highScore = PlayerPrefs.GetInt("HighScore", 0);
-        recordText.text = highScore.ToString();
+        recordText.text = GameManager.Instance.HighScore.ToString();
     }
 
     public void UpdateHealthUI(int currentHealth)
@@ -48,14 +45,8 @@ public class GUIManager : MonoBehaviour
 
     public void UpdateScoreUI()
     {
-        score += 1;
-        if(score > highScore)
-        {
-            highScore = score;
-            recordText.text = highScore.ToString();
-            PlayerPrefs.SetInt("HighScore", highScore);
-        }
-        scoreText.text = "x" + score.ToString();
+        scoreText.text = "x" + GameManager.Instance.Score.ToString();
+        recordText.text = GameManager.Instance.HighScore.ToString();
     }
 
 

@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.SocialPlatforms.Impl;
 
 public class GameManager : MonoBehaviour
 {
@@ -10,6 +11,22 @@ public class GameManager : MonoBehaviour
     public GameState gameState;
 
     [SerializeField] private GameObject player;
+
+    public int Score { get; set; }
+
+    public int HighScore
+    {
+        get
+        {
+            return PlayerPrefs.GetInt("HighScore", 0);
+        }
+        set
+        {
+            PlayerPrefs.SetInt("HighScore", value);
+        }
+    }
+
+    public static bool isTEST = false;
     private void Awake()
     {
         if (_instance != null && _instance != this)
@@ -21,8 +38,9 @@ public class GameManager : MonoBehaviour
             _instance = this;
         }
         gameState = GameState.WaitingStart;
-
     }
+
+
 
     public void Start()
     {
@@ -33,14 +51,21 @@ public class GameManager : MonoBehaviour
     {
         gameState = GameState.Playing;
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-        Instantiate(player);
+
+        if (GameObject.FindGameObjectsWithTag("Player") == null)
+        {
+            Instantiate(player);
+        }
     }
 
     public void StartGame()
     {
         gameState = GameState.Playing;
         SoundManager.Instance.PlayGameStartSound();
-        Instantiate(player);
+        if (GameObject.FindGameObjectsWithTag("Player") == null)
+        {
+            Instantiate(player);
+        }
     }
 
     public void ExitGame()
@@ -65,6 +90,17 @@ public class GameManager : MonoBehaviour
         gameState = GameState.GameOver;
         GUIManager.Instance.OnGameComplete();
         SoundManager.Instance.PlayGameCompleteSound();
+    }
+
+    public void UpdateScore()
+    {
+        Score += 1;
+        if (Score > HighScore)
+        {
+            HighScore = Score;
+        }
+
+        GUIManager.Instance.UpdateScoreUI();
     }
 
 }
