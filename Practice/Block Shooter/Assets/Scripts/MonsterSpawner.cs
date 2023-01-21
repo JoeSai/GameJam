@@ -123,7 +123,7 @@ public class MonsterSpawner : MonoBehaviour
             }
             if (isAllBossDied)
             {
-                GameManager.Instance.GameOver();
+                GameManager.Instance.GameComplete();
             }
 
             return;
@@ -211,7 +211,7 @@ public class MonsterSpawner : MonoBehaviour
         {
             GameObject monster = Instantiate(bossPrefabs[i], spawnPoints[spawnIndex].position, Quaternion.identity);
             MonsterScript monsterScript = monster.GetComponent<MonsterScript>();
-            monsterScript.SetHealth(10);
+            monsterScript.SetHealth(100);
             spawnIndex++;
 
             bossScripts.Add(monsterScript);

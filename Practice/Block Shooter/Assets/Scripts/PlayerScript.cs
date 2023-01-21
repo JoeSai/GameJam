@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerScript : MonoBehaviour
 {
-    [SerializeField] private int health = 3;
+    public int health = 3;
     [SerializeField] private float moveSpeed = 10f;
     [SerializeField] private float rotateSpeed = 20f;
     [SerializeField] private float attackRate = 0.1f;
@@ -144,9 +144,14 @@ public class PlayerScript : MonoBehaviour
 
     public void SetHealth(int health)
     {
+        if (this.health > health)
+        {
+            Camera.main.GetComponent<CameraShake>().ScreenShake();
+            SoundManager.Instance.PlayPlayerHurtSound();
+        }
+
         this.health = health;
-        Camera.main.GetComponent<CameraShake>().ScreenShake();
-        SoundManager.Instance.PlayPlayerHurtSound();
+
         GUIManager.Instance.UpdateHealthUI(this.health);
         if (this.health <= 0)
         {

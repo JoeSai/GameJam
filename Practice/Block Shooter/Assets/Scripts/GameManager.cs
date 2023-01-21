@@ -52,7 +52,7 @@ public class GameManager : MonoBehaviour
         gameState = GameState.Playing;
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
 
-        if (GameObject.FindGameObjectsWithTag("Player") == null)
+        if (GameObject.FindGameObjectWithTag("Player") == null)
         {
             Instantiate(player);
         }
@@ -62,7 +62,9 @@ public class GameManager : MonoBehaviour
     {
         gameState = GameState.Playing;
         SoundManager.Instance.PlayGameStartSound();
-        if (GameObject.FindGameObjectsWithTag("Player") == null)
+
+        print(GameObject.FindGameObjectWithTag("Player"));
+        if (GameObject.FindGameObjectWithTag("Player") == null)
         {
             Instantiate(player);
         }

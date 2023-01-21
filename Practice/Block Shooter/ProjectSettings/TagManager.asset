@@ -7,6 +7,7 @@ TagManager:
   - Bullet
   - Enemy
   - WeaponUpgrade
+  - AddHealth
   layers:
   - Default
   - TransparentFX

@@ -13,8 +13,8 @@ GameObject:
   - component: {fileID: 844187585431510593}
   - component: {fileID: 4934707839820176294}
   m_Layer: 0
-  m_Name: WeaponUpgradeItem
-  m_TagString: WeaponUpgrade
+  m_Name: AddHealth
+  m_TagString: AddHealth
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

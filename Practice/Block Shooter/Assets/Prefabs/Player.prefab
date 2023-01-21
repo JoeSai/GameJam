@@ -4885,6 +4885,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   particleDamage: 1
   particleKnockbackForce: 1
+  currentBullets: 1
+  maxBullets: 3
 --- !u!1 &3183556242150493522
 GameObject:
   m_ObjectHideFlags: 0
@@ -4898,6 +4900,7 @@ GameObject:
   - component: {fileID: 3183556242150493527}
   - component: {fileID: 3183556242150493520}
   - component: {fileID: 3183556242150493521}
+  - component: {fileID: 7955981888276014588}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -5044,3 +5047,17 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 192
   flashColor: {r: 1, g: 1, b: 1, a: 1}
+--- !u!114 &7955981888276014588
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3183556242150493522}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6325a2ebe923f6d428f988d7f9607907, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  weapon: {fileID: 3183556242025436438}
+  player: {fileID: 3183556242150493521}
