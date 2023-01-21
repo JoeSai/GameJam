@@ -1717,10 +1717,10 @@ RectTransform:
   m_Father: {fileID: 1549064528}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 50, y: 0}
-  m_SizeDelta: {x: 100, y: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: -238, y: 0}
+  m_SizeDelta: {x: 100, y: 480}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &575410049
 MonoBehaviour:
@@ -6467,7 +6467,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: PRAI\nRIE\nKING
+  m_text: BLOCK\nSHOOTER
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: b6683a593747eca488cb3e98c4fba67b, type: 2}
   m_sharedMaterial: {fileID: 3305928453062447980, guid: b6683a593747eca488cb3e98c4fba67b, type: 2}
